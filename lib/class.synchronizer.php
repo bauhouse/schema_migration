@@ -77,8 +77,8 @@
 					
 					if (is_array($fields) && !empty($fields)){
 						foreach($fields as $data){
-							$field_label = $data['label'];
-							$field_exists = Symphony::Database()->fetchCol('id', "SELECT `id` FROM `tbl_fields` WHERE `parent_section` = '$section_id' AND `label` = '$field_label'");
+							$field_id = $data['id'];
+							$field_exists = Symphony::Database()->fetchCol('id', "SELECT `id` FROM `tbl_fields` WHERE `parent_section` = '$section_id' AND `id` = '$field_id'");
 							if(!$field_exists) {
 								unset($data['id']);
 							}
