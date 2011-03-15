@@ -77,6 +77,11 @@
 					
 					if (is_array($fields) && !empty($fields)){
 						foreach($fields as $data){
+							$field_label = $data['label'];
+							$field_exists = Symphony::Database()->fetchCol('id', "SELECT `id` FROM `tbl_fields` WHERE `parent_section` = '$section_id' AND `label` = '$field_label'");
+							if(!$field_exists) {
+								unset($data['id']);
+							}
 							$field = $fieldManager->create($data['type']);
 							$field->setFromPOST($data);
 							$field->commit();
