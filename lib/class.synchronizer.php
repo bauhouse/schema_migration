@@ -54,7 +54,7 @@
 					foreach($meta_nodes as $node) $meta[$node->tagName] = $node->textContent;
 					
 					if ($editing){
-						Symphony::Database()->update($meta, 'tbl_sections', "guid = {$section_guid}");
+						Symphony::Database()->update($meta, 'tbl_sections', "guid = '{$section_guid}'");
 					} else {
 						$section_id = $sectionManager->add($meta);
 					}
@@ -119,7 +119,7 @@
 						}
 
 						if (in_array($guid, $db_pages)){
-							Symphony::Database()->update($fields, 'tbl_pages', "guid = {$guid}");
+							Symphony::Database()->update($fields, 'tbl_pages', "guid = '{$guid}'");
 						} else {
 							Symphony::Database()->insert($fields, 'tbl_pages');
 						}
@@ -139,7 +139,7 @@
 					}
 				}
 				
-				$imploded_guids = implode(',', $page_guids);
+				$imploded_guids = "'" . implode("','", $page_guids) . "'";
 				$page_ids = Symphony::Database()->fetch("SELECT id, guid FROM `tbl_pages` WHERE guid IN ({$imploded_guids})", "guid");
 
 				if(is_array($page_ids) && !empty($page_ids)){
@@ -153,7 +153,7 @@
 					}
 				}
 				
-				$ids = implode(',', array_values($page_ids));
+				$ids = "'" . implode("','", array_values($page_ids)) . "'";
 				Symphony::Database()->delete('tbl_pages_types', "`page_id` IN ({$ids})");
 
 				if(is_array($entries) && !empty($entries)){
