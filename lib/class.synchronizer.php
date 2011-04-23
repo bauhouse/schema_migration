@@ -113,14 +113,16 @@
 					
 						$fields = array();
 					
-						foreach($page->childNodes as $node){
-							if ($node->tagName == 'guid') continue;
-							$fields[$node->tagName] = $node->textContent;
-						}
-
 						if (in_array($guid, $db_pages)){
+							foreach($page->childNodes as $node){
+								if ($node->tagName == 'guid') continue;
+								$fields[$node->tagName] = $node->textContent;
+							}
 							Symphony::Database()->update($fields, 'tbl_pages', "guid = '$guid'");
 						} else {
+							foreach($page->childNodes as $node){
+								$fields[$node->tagName] = $node->textContent;
+							}
 							Symphony::Database()->insert($fields, 'tbl_pages');
 						}
 					}
