@@ -154,6 +154,7 @@
 			Symphony::Database()->query("ALTER TABLE `tbl_sections` ADD `guid` varchar(13) NOT NULL AFTER `navigation_group`");
 			Symphony::Database()->query("ALTER TABLE `tbl_fields` ADD `guid` varchar(13) NOT NULL AFTER `show_column`");
 			Symphony::Database()->query("ALTER TABLE `tbl_pages` ADD `guid` varchar(13) NOT NULL AFTER `sortorder`");
+			Symphony::Database()->query("ALTER TABLE `tbl_pages_types` ADD `guid` varchar(13) NOT NULL AFTER `type`");
 
 			return true;
 		}
@@ -162,6 +163,7 @@
 			Symphony::Database()->query("ALTER TABLE `tbl_sections` DROP `guid`");
 			Symphony::Database()->query("ALTER TABLE `tbl_fields` DROP `guid`");
 			Symphony::Database()->query("ALTER TABLE `tbl_pages` DROP `guid`");
+			Symphony::Database()->query("ALTER TABLE `tbl_pages_types` DROP `guid`");
 			
 			return true;
 		}
