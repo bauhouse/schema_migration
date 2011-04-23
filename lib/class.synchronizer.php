@@ -150,6 +150,9 @@
 							$entries[] = array(
 								'page_id' => $id,
 								'type' => $xpath->query("/pages/types/type[page_guid/text() = '$guid']/type")->item(0)->textContent
+								'page_id' => $id['id'],
+								'type' => $xpath->query("/pages/types/type[page_guid/text() = '{$guid}']/type")->item(0)->textContent,
+								'guid' => $id['guid'],
 							);
 						}
 					}
