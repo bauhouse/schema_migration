@@ -54,7 +54,7 @@
 					foreach($meta_nodes as $node) $meta[$node->tagName] = $node->textContent;
 					
 					if ($editing){
-						Symphony::Database()->update($meta, 'tbl_sections', "guid = '{$section_guid}'");
+						Symphony::Database()->update($meta, 'tbl_sections', "guid = '$section_guid'");
 					} else {
 						$section_id = $sectionManager->add($meta);
 					}
@@ -119,7 +119,7 @@
 						}
 
 						if (in_array($guid, $db_pages)){
-							Symphony::Database()->update($fields, 'tbl_pages', "guid = '{$guid}'");
+							Symphony::Database()->update($fields, 'tbl_pages', "guid = '$guid'");
 						} else {
 							Symphony::Database()->insert($fields, 'tbl_pages');
 						}
@@ -140,21 +140,21 @@
 				}
 				
 				$imploded_guids = "'" . implode("','", $page_guids) . "'";
-				$page_ids = Symphony::Database()->fetch("SELECT id, guid FROM `tbl_pages` WHERE guid IN ({$imploded_guids})", "guid");
+				$page_ids = Symphony::Database()->fetch("SELECT id, guid FROM `tbl_pages` WHERE guid IN ($imploded_guids)", "guid");
 
 				if(is_array($page_ids) && !empty($page_ids)){
 					foreach($page_ids as $guid => $id){
 						if (in_array($guid, $page_guids)){
 							$entries[] = array(
 								'page_id' => $id,
-								'type' => $xpath->query("/pages/types/type[page_guid/text() = '{$guid}']/type")->item(0)->textContent
+								'type' => $xpath->query("/pages/types/type[page_guid/text() = '$guid']/type")->item(0)->textContent
 							);
 						}
 					}
 				}
 				
 				$ids = "'" . implode("','", array_values($page_ids)) . "'";
-				Symphony::Database()->delete('tbl_pages_types', "`page_id` IN ({$ids})");
+				Symphony::Database()->delete('tbl_pages_types', "`page_id` IN ($ids)");
 
 				if(is_array($entries) && !empty($entries)){
 					foreach ($entries as $entry){
