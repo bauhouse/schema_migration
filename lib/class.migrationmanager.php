@@ -39,7 +39,7 @@
 			
 			if (is_array($types) && !empty($types)){
 				foreach($types as $type){
-					$guid = Symphony::Database()->fetchVar('guid', 0, "SELECT guid `tbl_pages` WHERE id = {$type['page_id']}");
+					$guid = Symphony::Database()->fetchVar('guid', 0, "SELECT guid FROM `tbl_pages` WHERE id = {$type['page_id']}");
 
 					$result[] = array(
 						'page_guid' => $guid,
