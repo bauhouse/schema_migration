@@ -43,6 +43,8 @@
 			if (@array_key_exists('sync', $_POST['action'])){
 				Synchronizer::updatePages();
 				Synchronizer::updateSections();
+
+		        Administration::instance()->Page->pageAlert(__('Pages and Sections have been successfully migrated.'), Alert::SUCCESS);
 			}
 		}
 		
