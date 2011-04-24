@@ -93,7 +93,7 @@
 					$type = $xml->createElement('type');
 
 					foreach($page_type as $column => $value){
-						if ($column == 'type') $value = implode(', ', $value);
+						if ($column == 'type' && is_array($value)) $value = implode(', ', $value);
 						$data = $xml->createElement($column, $value);
 						$type->appendChild($data);
 					}
