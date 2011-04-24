@@ -72,6 +72,11 @@
 						Symphony::Database()->update(array('guid' => $page['guid']), 'tbl_pages', "id = {$page['id']}");
 					}
 
+					// Get current page guid
+					if($page['handle'] == $_POST['fields']['handle'] && $page['parent'] == $_POST['fields']['parent']){
+						$current_page_guid = $page['guid'];
+					}
+					
 					$entry = $xml->createElement('entry');
 
 					foreach($page as $column => $value){
@@ -85,7 +90,7 @@
 			}
 
 			// Page types
-			$types = MigrationManager::getPagesTypes($page['guid']);
+			$types = MigrationManager::getPagesTypes($current_page_guid);
 			$pages_types = $xml->createElement('types');
 
 			if (is_array($types) && !empty($types)){
