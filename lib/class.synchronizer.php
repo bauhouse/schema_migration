@@ -142,23 +142,24 @@
 				}
 				
 				$imploded_guids = "'" . implode("','", $page_guids) . "'";
-				$page_ids = Symphony::Database()->fetch("SELECT id, guid FROM `tbl_pages` WHERE guid IN ($imploded_guids)", "guid");
+				$page_ids_array = Symphony::Database()->fetch("SELECT id, guid FROM `tbl_pages` WHERE guid IN ($imploded_guids)", "guid");
+				
+				$page_ids = array();
 
-				if(is_array($page_ids) && !empty($page_ids)){
-					foreach($page_ids as $guid => $id){
+				if(is_array($page_ids_array) && !empty($page_ids_array)){
+					foreach($page_ids_array as $guid => $ids_array){
 						if (in_array($guid, $page_guids)){
 							$entries[] = array(
-								'page_id' => $id,
-								'type' => $xpath->query("/pages/types/type[page_guid/text() = '$guid']/type")->item(0)->textContent
-								'page_id' => $id['id'],
+								'page_id' => $ids_array['id'],
 								'type' => $xpath->query("/pages/types/type[page_guid/text() = '{$guid}']/type")->item(0)->textContent,
-								'guid' => $id['guid'],
+								'guid' => $ids_array['guid'],
 							);
 						}
+						$page_ids[] = $ids_array['id'];
 					}
 				}
 				
-				$ids = "'" . implode("','", array_values($page_ids)) . "'";
+				$ids = implode(",", array_values($page_ids));
 				Symphony::Database()->delete('tbl_pages_types', "`page_id` IN ($ids)");
 
 				if(is_array($entries) && !empty($entries)){
