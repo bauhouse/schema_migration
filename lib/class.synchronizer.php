@@ -160,7 +160,9 @@
 				}
 				
 				$ids = implode(",", array_values($page_ids));
-				Symphony::Database()->delete('tbl_pages_types', "`page_id` IN ($ids)");
+				if(is_array($ids) && !empty($ids)){
+					Symphony::Database()->delete('tbl_pages_types', "`page_id` IN ($ids)");
+				}
 
 				if(is_array($entries) && !empty($entries)){
 					foreach ($entries as $entry){
