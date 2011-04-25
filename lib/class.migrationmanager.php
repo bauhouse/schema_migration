@@ -21,7 +21,7 @@
 			}
 		}
 
-		public static function getPagesTypes($page_guid){
+		public static function getPagesTypes($pages, $page_guid){
 			$result = array();
 			
 			$fields = $_POST['fields'];
@@ -30,21 +30,44 @@
 
 			$types = Symphony::Database()->fetch('SELECT * FROM `tbl_pages_types`');
 			
-			if (!empty($current_types)){
-				$result[] = array(
-					'page_guid' => $page_guid,
-					'type' => $current_types
-				);
-			}
-			
-			if (is_array($types) && !empty($types)){
-				foreach($types as $type){
-					$guid = Symphony::Database()->fetchVar('guid', 0, "SELECT guid FROM `tbl_pages` WHERE id = {$type['page_id']}");
-
+			if (is_array($current_types) && !empty($current_types)){
+				foreach($current_types as $current_type){
+					foreach($pages as $page) {
+						if($page['guid'] == $page_guid){
+							$page_id = $page['id'];
+						}
+					}
 					$result[] = array(
-						'page_guid' => $guid,
-						'type' => $type['type']
+						'page_id' => $page_id,
+						'type' => $current_type,
+						'guid' => $page_guid
 					);
+				}
+			}
+
+			if (is_array($pages) && !empty($pages) && is_array($types) && !empty($types)){
+				foreach($pages as $page){
+					
+					// Find existing page types
+					$page_types = array();
+					foreach($types as $type){
+						if($page['guid'] == $type['guid']){
+							$page_types[] = $type['type'];
+
+							$result[] = array(
+								'page_id' => $page['id'],
+								'type' => $type['type'],
+								'guid' => $page['guid']
+							);
+						}
+						elseif($page['id'] == $type['page_id']){
+							$result[] = array(
+								'page_id' => $page['id'],
+								'type' => $type['type'],
+								'guid' => $page['guid']
+							);
+						}
+					}
 				}
 			}
 			
@@ -90,7 +113,7 @@
 			}
 
 			// Page types
-			$types = MigrationManager::getPagesTypes($current_page_guid);
+			$types = MigrationManager::getPagesTypes($pages, $current_page_guid);
 			$pages_types = $xml->createElement('types');
 
 			if (is_array($types) && !empty($types)){
