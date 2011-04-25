@@ -137,7 +137,7 @@
 
 				if($types->length){
 					foreach($types as $type){
-						$page_guids[] = $type->firstChild->textContent;
+						$page_guids[] = $type->lastChild->textContent;
 					}
 				}
 				
@@ -151,7 +151,7 @@
 						if (in_array($guid, $page_guids)){
 							$entries[] = array(
 								'page_id' => $ids_array['id'],
-								'type' => $xpath->query("/pages/types/type[page_guid/text() = '{$guid}']/type")->item(0)->textContent,
+								'type' => $xpath->query("/pages/types/type[guid/text() = '{$guid}']/type")->item(0)->textContent,
 								'guid' => $ids_array['guid'],
 							);
 						}
