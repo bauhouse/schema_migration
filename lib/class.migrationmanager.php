@@ -130,8 +130,10 @@
 
 					foreach($page_type as $column => $value){
 						if ($column == 'type' && is_array($value)) $value = implode(', ', $value);
-						$data = $xml->createElement($column, $value);
-						$type->appendChild($data);
+						if ($column !== 'page_id') {
+							$data = $xml->createElement($column, $value);
+							$type->appendChild($data);
+						}
 					}
 
 					$pages_types->appendChild($type);
