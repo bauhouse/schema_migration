@@ -118,6 +118,14 @@
 
 			if (is_array($types) && !empty($types)){
 				foreach($types as $page_type){
+
+					// Ensures that page type refers to a page guid
+					foreach($pages as $page){
+						if($page['id'] == $page_type['page_id']){
+							Symphony::Database()->update(array('guid' => $page['guid']), 'tbl_pages_types', "page_id = {$page['id']}");
+						}
+					}
+
 					$type = $xml->createElement('type');
 
 					foreach($page_type as $column => $value){
